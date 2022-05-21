@@ -1,1 +1,0 @@
-import{_ as r}from"./Space.4971237a.js";import{o as _,c as a,w as s,a as p}from"./index.07e0703c.js";import"./use-rtl.16e477c3.js";var f=(o,e)=>{const t=o.__vccOpts||o;for(const[n,c]of e)t[n]=c;return t};const i={},l=p(" \u767B\u5F55\u9875 ");function m(o,e){const t=r;return _(),a(t,null,{default:s(()=>[l]),_:1})}var v=f(i,[["render",m]]);export{v as default};
