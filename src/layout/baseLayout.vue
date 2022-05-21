@@ -52,8 +52,8 @@ import { renderIcon } from '../utils/renderIcon';
 const inverted = ref(false);
 const menuOptions: MenuOption[] = [
   {
-    label: () => label('/company/list', '万卷之王'),
-    key: '1',
+    label: () => label('/company/list', '内卷之王'),
+    key: '/company/list',
     icon: renderIcon(Fitness),
   },
 ];
