@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import {
-  createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized,
+  createRouter, createWebHashHistory, NavigationGuardNext, RouteLocationNormalized,
 } from 'vue-router';
 
 const routes = [
@@ -36,7 +36,7 @@ const routes = [
 
 export const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHashHistory(),
 });
 
 router.beforeEach((
