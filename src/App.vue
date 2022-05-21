@@ -1,21 +1,22 @@
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import { darkTheme, lightTheme, useOsTheme } from 'naive-ui';
+import { computed } from 'vue';
+// import { useGlobalStore } from './store';
+
+// const gs = useGlobalStore();
+
+const osThemeRef = useOsTheme();
+const theme = computed(() => (osThemeRef.value === 'dark' ? darkTheme : lightTheme));
+
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
+  <n-config-provider :theme="theme">
+    <n-global-style />
+    <router-view />
+  </n-config-provider>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import './styles/common.less';
 </style>
