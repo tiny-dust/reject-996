@@ -10,8 +10,8 @@ const request = axios.create({
 // request.interceptors.response.use((res) => res, (err) => err);
 
 const api = {
-  getCompanies() {
-    return request.get('/company/list');
+  getCompanies(params: { search: string}) {
+    return request.get('/company/list', { params });
   },
   registerEmailCode(params: {email: string}) {
     return request.get('/users/getCode', { params });
