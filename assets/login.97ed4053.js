@@ -1,0 +1,1 @@
+import{_}from"./Space.b79fa386.js";import{o as r,c as a,w as s,a as p}from"./index.79757e06.js";var f=(o,e)=>{const t=o.__vccOpts||o;for(const[n,c]of e)t[n]=c;return t};const l={},i=p(" \u767B\u5F55\u9875 ");function u(o,e){const t=_;return r(),a(t,null,{default:s(()=>[i]),_:1})}var x=f(l,[["render",u]]);export{x as default};
