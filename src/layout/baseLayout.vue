@@ -31,7 +31,7 @@
     <n-layout>
       <n-layout-header
         bordered
-        style="height:80px"
+        style="height:60px"
       />
       <n-layout-content
         embedded
