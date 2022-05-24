@@ -45,6 +45,7 @@ import { ref } from 'vue';
 import api from '../../api/request';
 import { message } from '../../utils/message';
 
+// eslint-disable-next-line no-useless-escape
 const regCN = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 interface ModelType {
   email: string
