@@ -32,7 +32,7 @@ module.exports = {
       },
     ],
     'vue/multi-word-component-names': ['error', {
-      ignores: ['login'],
+      ignores: ['login', 'index'],
     }],
   },
 };

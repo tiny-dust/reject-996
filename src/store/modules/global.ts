@@ -4,5 +4,6 @@ export const GlobalStore = defineStore('global', {
   state: () => ({
     locale: '',
     theme: '',
+    loginAnime: false
   }),
 });

@@ -1,6 +1,6 @@
 import { App } from 'vue';
 import {
-  createRouter, createWebHashHistory, NavigationGuardNext, RouteLocationNormalized,
+  createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized,
 } from 'vue-router';
 
 const routes = [
@@ -9,7 +9,7 @@ const routes = [
     meta: {
       title: '',
     },
-    redirect: '/login',
+    component: () => import('../views/login/index.vue'),
   },
   {
     name: '登录页',
@@ -17,7 +17,7 @@ const routes = [
     meta: {
       title: '登录',
     },
-    component: () => import('../views/login.vue'),
+    component: () => import('../views/login/login.vue'),
   },
   {
     path: '/company',
@@ -27,7 +27,7 @@ const routes = [
         name: '公司列表',
         path: 'list',
         meta: {
-          title: '万卷之王',
+          title: '内卷之王',
         },
         component: () => import('../views/indexPage.vue'),
       },
@@ -36,7 +36,7 @@ const routes = [
 
 export const router = createRouter({
   routes,
-  history: createWebHashHistory(),
+  history: createWebHistory(),
 });
 
 router.beforeEach((

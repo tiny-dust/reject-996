@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const request = axios.create({
-  baseURL: 'https://150.158.181.254',
+  baseURL: '/api',
   timeout: 60 * 1000,
 });
 
@@ -18,6 +18,9 @@ const api = {
   },
   getCompanyDetail(params: { id: string }) {
     return request.get('/company/detail', { params });
+  },
+  toLogin(data:{email:string, password:string}) {
+    return request.post('/users/login', data);
   },
 };
 
