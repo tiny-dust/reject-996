@@ -20,8 +20,17 @@ const routes = [
     component: () => import('../views/login/login.vue'),
   },
   {
+    name: '注册页',
+    path: '/register',
+    meta: {
+      title: '注册',
+    },
+    component: () => import('../views/login/registerUser.vue'),
+  },
+  {
     path: '/company',
     component: () => import('../layout/baseLayout.vue'),
+    redirect: '/company/list',
     children: [
       {
         name: '公司列表',

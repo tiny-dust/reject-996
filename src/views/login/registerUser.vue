@@ -19,6 +19,23 @@
         />
       </n-form-item>
       <n-form-item
+        path="code"
+        label=""
+      >
+        <n-input
+          v-model:value="form.code"
+          placeholder="邮箱验证码"
+          :input-props="{ autoComplete: 'off' }"
+        />
+        <n-button
+          style="width:120px;margin-left: 8px;"
+          :disabled="disable !== 0"
+          @click="getCode"
+        >
+          {{ disable === 0 ?'获取验证码': disable+'s' }}
+        </n-button>
+      </n-form-item>
+      <n-form-item
         path="password"
         label=""
       >
@@ -26,52 +43,42 @@
           v-model:value="form.password"
           type="password"
           show-password-on="click"
-          autocomplete="new-password"
+          :input-props="{ autoComplete: 'new-password' }"
           placeholder="请输入密码"
         />
       </n-form-item>
       <n-button
         round
-        @click="toLogin"
-      >
-        登录
-      </n-button>
-      <n-divider dashed>
-        卷卷卷卷卷卷
-      </n-divider>
-      <n-button
-        text
-        type="info"
         @click="toRegister"
       >
-        注册一个账户吧
+        注册
       </n-button>
     </n-form>
   </div>
 </template>
-<script setup lang="ts">
-import {
-  FormInst, FormItemRule, FormRules, useMessage,
+<script setup lang="ts">import {
+  FormInst, FormRules, FormItemRule, useMessage,
 } from 'naive-ui';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '../../api/request';
-import { useGlobalStore } from '../../store';
+
+const router = useRouter();
 
 // eslint-disable-next-line no-useless-escape
 const regCN = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 interface ModelType {
   email: string
+  code: string
   password: string
 }
 
-const gs = useGlobalStore();
-const router = useRouter();
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
 const rules:FormRules = {
   email: [
     {
+      key: 'email',
       required: true,
       validator(rule:FormItemRule, value: string) {
         return regCN.test(value);
@@ -86,26 +93,53 @@ const rules:FormRules = {
 };
 const form = ref<ModelType>({
   email: '',
+  code: '',
   password: '',
 });
 
-function toLogin() {
-  formRef.value?.validate(async (errors) => {
-    if (!errors) {
-      const res = await api.toLogin(form.value);
+const disable = ref(0);
+
+async function toRegister() {
+  formRef.value?.validate(async (err) => {
+    if (!err) {
+      const res = await api.toRegister(form.value);
       if (res.code === 200) {
-        const { email, userId, token } = res.data;
-        gs.savaUserInfo(email, userId, token);
-        router.push('/company');
+        message.success('注册成功');
+        setTimeout(() => {
+          router.push('/login');
+        }, 500);
       }
-    } else {
-      message.error('验证失败');
     }
   });
 }
 
-function toRegister() {
-  router.push('/register');
+function checkRule(time = 60) {
+  disable.value = time;
+  setTimeout(() => {
+    if (disable.value > 0) {
+      checkRule(time - 1);
+    }
+  }, 1000);
+}
+
+function getCode() {
+  formRef.value?.validate(
+    async (err) => {
+      if (!err) {
+        const p = {
+          email: form.value.email,
+        };
+        const res = await api.registerEmailCode(p);
+        if (res.code === 200) {
+          message.success('请去前往邮箱查看验证码');
+          checkRule();
+        } else {
+          message.error(res.message);
+        }
+      }
+    },
+    (rule) => rule.key === 'email',
+  );
 }
 </script>
 <style lang="less">
