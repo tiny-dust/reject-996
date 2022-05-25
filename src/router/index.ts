@@ -9,7 +9,8 @@ const routes = [
     meta: {
       title: '',
     },
-    component: () => import('../views/login/index.vue'),
+    redirect: '/login',
+    // component: () => import('../views/login/index.vue'),
   },
   {
     name: '登录页',
