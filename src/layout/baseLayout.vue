@@ -64,7 +64,6 @@
 <script setup lang="ts">
 import { Fitness } from '@vicons/ionicons5';
 import { MenuOption } from 'naive-ui';
-import { storeToRefs } from 'pinia';
 import {
   onMounted, ref, watch,
 } from 'vue';
