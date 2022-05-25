@@ -13,7 +13,7 @@
   </n-space>
   <n-data-table
     :columns="columns"
-    :data="data"
+    :data="tableData"
     striped
     :bordered="false"
     :max-height="712"
@@ -53,17 +53,18 @@
   </n-modal>
 </template>
 <script setup lang="ts">
-import { DataTableSortState, NButton } from 'naive-ui';
+import { DataTableSortState, NButton, useMessage } from 'naive-ui';
 import { h, reactive, ref } from 'vue';
-import api from '../api/request';
+import api, { Company, CompanyDetail } from '../api/request';
 
-const data = ref([]);
+const message = useMessage();
+const tableData = ref<Company[]>([]);
 const keyword = ref('');
 const total = ref(0);
 const pageCount = ref(0);
 const loading = ref(false);
 const showModal = ref(false);
-const detail = ref([]);
+const detail = ref<CompanyDetail[]>([]);
 let sortType = 1;
 
 async function getCompanyDetail(id: string) {
@@ -71,7 +72,7 @@ async function getCompanyDetail(id: string) {
     id,
   };
   const res = await api.getCompanyDetail(p);
-  detail.value = res.data.data.map((item:any, index: number) => ({
+  detail.value = res.data.map((item:any, index: number) => ({
     index: index + 1,
     ...item,
   }));
@@ -87,12 +88,17 @@ async function getAllCompany(page = 1, pageSize = 15) {
     sortType,
   };
   const res = await api.getCompanies(p);
-  total.value = res.data.total;
-  pageCount.value = Math.ceil(total.value / pageSize);
-  data.value = res.data.data.map((item:any, index: number) => ({
-    index: index + 1,
-    ...item,
-  }));
+  if (res.code === 200) {
+    total.value = res.total;
+    pageCount.value = Math.ceil(total.value / pageSize);
+    tableData.value = res.data.map((item:any, index: number) => ({
+      index: index + 1,
+      ...item,
+    }));
+  } else {
+    message.error(res.message);
+  }
+
   loading.value = false;
 }
 

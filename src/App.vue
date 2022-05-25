@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { darkTheme, lightTheme, useOsTheme } from 'naive-ui';
-import { computed } from 'vue';
-// import { useGlobalStore } from './store';
+import { darkTheme, lightTheme } from 'naive-ui';
+import { storeToRefs } from 'pinia';
+import { useGlobalStore } from './store';
 
-// const gs = useGlobalStore();
-
-const osThemeRef = useOsTheme();
-const theme = computed(() => (osThemeRef.value === 'dark' ? darkTheme : lightTheme));
+const gs = useGlobalStore();
+const { theme } = storeToRefs(gs);
 
 </script>
 
 <template>
-  <n-config-provider :theme="theme">
+  <n-config-provider :theme="theme ? darkTheme : lightTheme">
     <n-global-style />
-    <router-view />
+    <n-message-provider>
+      <router-view />
+    </n-message-provider>
   </n-config-provider>
 </template>
 
