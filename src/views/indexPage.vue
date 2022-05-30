@@ -14,7 +14,7 @@
     </n-space>
     <n-button
       type="info"
-      @click="addFrom = true,isCompany = 1"
+      @click="addEvent(1)"
     >
       新增公司
     </n-button>
@@ -70,7 +70,7 @@
       <template #header-extra>
         <n-button
           type="info"
-          @click="addFrom = true,isCompany = 0"
+          @click="addEvent(0)"
         >
           添加评论
         </n-button>
@@ -180,12 +180,17 @@ function sortCompanyScore(options:DataTableSortState) {
 function isComplete(bool: number) {
   if (bool === 1) {
     addFrom.value = false;
-    if (isCompany === 1) {
+    if (isCompany.value === 1) {
       getAllCompany(pagination.page, pagination.pageSize);
     } else {
       getCompanyDetail(company.value.id);
     }
   }
+}
+
+function addEvent(bool: number) {
+  addFrom.value = true;
+  isCompany.value = bool;
 }
 
 const columns = [
