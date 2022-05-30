@@ -58,6 +58,19 @@ const api = {
   toRegister(data: { email: string, code: string, password: string }):Promise<CommonResult> {
     return request.post('/users/register', data);
   },
+  getIntro():Promise<CommonResult<string>> {
+    return request.get('/users/intro');
+  },
+  addCompany(
+    data: { name: string, comment: string, score: string },
+  ): Promise<CommonResult> {
+    return request.post('/company/add', data);
+  },
+  addComment(
+    data: { companyId: string, comment: string, score: string, pay: string },
+  ): Promise<CommonResult> {
+    return request.post('/company/add-comment', data);
+  },
 };
 
 export default api;

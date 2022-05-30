@@ -2,8 +2,9 @@ import { App } from 'vue';
 import {
   createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized,
 } from 'vue-router';
+import { ChatbubbleEllipsesOutline, Fitness } from '@vicons/ionicons5';
 
-const routes = [
+export const routes = [
   {
     path: '/',
     meta: {
@@ -38,8 +39,18 @@ const routes = [
         path: 'list',
         meta: {
           title: '内卷之王',
+          icon: Fitness,
         },
         component: () => import('../views/indexPage.vue'),
+      },
+      {
+        name: '聊一下',
+        path: 'instruction',
+        meta: {
+          title: '聊一聊',
+          icon: ChatbubbleEllipsesOutline,
+        },
+        component: () => import('../views/instruction.vue'),
       },
     ],
   }];

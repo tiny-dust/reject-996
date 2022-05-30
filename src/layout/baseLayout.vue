@@ -62,28 +62,38 @@
   </n-layout>
 </template>
 <script setup lang="ts">
-import { Fitness } from '@vicons/ionicons5';
-import { MenuOption } from 'naive-ui';
 import {
+  Component,
+  computed,
   onMounted, ref, watch,
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { useGlobalStore } from '../store';
 import { label } from '../utils/menuLabel';
 import { renderIcon } from '../utils/renderIcon';
+import { routes } from '../router';
 
 const gs = useGlobalStore();
 const route = useRoute();
 
 const active = ref('');
 const inverted = ref(false);
-const menuOptions: MenuOption[] = [
-  {
-    label: () => label('/company/list', '内卷之王'),
-    key: '/company/list',
-    icon: renderIcon(Fitness),
-  },
-];
+const menuOptions = computed(() => {
+  const list = routes.filter((item) => item.children)[0];
+  return list.children && list.children.map((item) => ({
+    label: () => label(`${list.path}/${item.path}`, (item.meta?.title as string)),
+    key: `${list.path}/${item.path}`,
+    icon: renderIcon((item.meta?.icon as Component)),
+  }));
+});
+
+// const menuOptions: MenuOption[] = [
+//   {
+//     label: () => label('/company/list', '内卷之王'),
+//     key: '/company/list',
+//     icon: renderIcon(Fitness),
+//   },
+// ];
 
 function changeTheme(bool: boolean) {
   gs.theme = bool;
