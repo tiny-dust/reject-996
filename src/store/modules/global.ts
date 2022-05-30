@@ -1,6 +1,27 @@
 import { defineStore } from 'pinia';
 
-export const GlobalStore = defineStore('global', {
+interface Actions {
+  savaUserInfo: (userEmail: string, userId: string, token: string) => void;
+  saveIntro: (intro: string) => void;
+}
+
+interface State {
+  locale: string;
+  theme: boolean;
+  loginAnime: boolean;
+  token: string;
+  userEmail: string;
+  userId: string;
+  intro: string;
+}
+
+interface Getters {
+  [key: string]: any,
+  locales: () => ({label:string, key:string}[])
+}
+
+export const GlobalStore = defineStore<string, State, Getters, Actions>({
+  id: 'global',
   state: () => ({
     locale: '',
     theme: false,
@@ -8,6 +29,7 @@ export const GlobalStore = defineStore('global', {
     token: '',
     userEmail: '',
     userId: '',
+    intro: localStorage.getItem('intro') || '',
   }),
 
   actions: {
@@ -18,6 +40,10 @@ export const GlobalStore = defineStore('global', {
       localStorage.setItem('token', token);
       localStorage.setItem('userId', userId);
       localStorage.setItem('userEmail', userEmail);
+    },
+    saveIntro(intro: string) {
+      this.intro = intro;
+      localStorage.setItem('intro', intro);
     },
   },
 });

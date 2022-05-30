@@ -1,14 +1,22 @@
 <template>
-  <n-space style="margin-bottom: 8px;">
-    <n-input
-      v-model:value="keyword"
-      placeholder="请输入公司名称"
-    />
-    <n-button @click="getAllCompany()">
-      搜索
-    </n-button>
-    <n-button @click="reset">
-      重置
+  <n-space justify="space-between">
+    <n-space style="margin-bottom: 8px;">
+      <n-input
+        v-model:value="keyword"
+        placeholder="请输入公司名称"
+      />
+      <n-button @click="getAllCompany()">
+        搜索
+      </n-button>
+      <n-button @click="reset">
+        重置
+      </n-button>
+    </n-space>
+    <n-button
+      type="info"
+      @click="addEvent(1)"
+    >
+      新增公司
     </n-button>
   </n-space>
   <n-data-table
@@ -30,6 +38,25 @@
     }"
   />
   <n-modal
+    v-model:show="addFrom"
+  >
+    <n-card
+      style="width: 600px"
+      :title=" isCompany === 1 ? '添加公司' : '添加评论'"
+      :bordered="false"
+      size="huge"
+      role="dialog"
+      aria-modal="true"
+    >
+      <Component
+        :is="isCompany === 1 ? CompanyForm : CommentForm"
+        :company="company.name"
+        :company-id="company.id"
+        @complete="isComplete"
+      />
+    </n-card>
+  </n-modal>
+  <n-modal
     v-model:show="showModal"
   >
     <n-card
@@ -40,6 +67,14 @@
       role="dialog"
       aria-modal="true"
     >
+      <template #header-extra>
+        <n-button
+          type="info"
+          @click="addEvent(0)"
+        >
+          添加评论
+        </n-button>
+      </template>
       <n-data-table
         class="modal-table"
         :columns="detailCol"
@@ -56,6 +91,8 @@
 import { DataTableSortState, NButton, useMessage } from 'naive-ui';
 import { h, reactive, ref } from 'vue';
 import api, { Company, CompanyDetail } from '../api/request';
+import CompanyForm from '../components/CompanyForm.vue';
+import CommentForm from '../components/CommentForm.vue';
 
 const message = useMessage();
 const tableData = ref<Company[]>([]);
@@ -65,7 +102,13 @@ const pageCount = ref(0);
 const loading = ref(false);
 const showModal = ref(false);
 const detail = ref<CompanyDetail[]>([]);
+const addFrom = ref(false);
+const company = ref({
+  id: '',
+  name: '',
+});
 let sortType = 1;
+const isCompany = ref(0);
 
 async function getCompanyDetail(id: string) {
   const p = {
@@ -134,6 +177,22 @@ function sortCompanyScore(options:DataTableSortState) {
   reset();
 }
 
+function isComplete(bool: number) {
+  if (bool === 1) {
+    addFrom.value = false;
+    if (isCompany.value === 1) {
+      getAllCompany(pagination.page, pagination.pageSize);
+    } else {
+      getCompanyDetail(company.value.id);
+    }
+  }
+}
+
+function addEvent(bool: number) {
+  addFrom.value = true;
+  isCompany.value = bool;
+}
+
 const columns = [
   {
     key: 'index',
@@ -154,12 +213,16 @@ const columns = [
   {
     key: 'comment',
     title: '评价',
-    render: (rowData: {id: string, comment:string}) => h(
+    render: (rowData: {id: string, comment:string, name:string}) => h(
       NButton,
       {
         text: true,
         type: 'info',
         onClick: () => {
+          company.value = {
+            id: rowData.id,
+            name: rowData.name,
+          };
           getCompanyDetail(rowData.id);
         },
       },
