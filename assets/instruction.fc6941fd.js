@@ -1,1 +1,0 @@
-import{a as o}from"./request.5d9bb19a.js";import{e as r,k as a,o as s,m as i,ap as c}from"./index.964b457b.js";const p=["innerHTML"],_=r({name:"instruction",setup(u){const n=a();function e(){n.intro||o.getIntro().then(t=>{n.saveIntro(t.data)})}return e(),(t,m)=>(s(),i("div",{innerHTML:c(n).intro},null,8,p))}});export{_ as default};
