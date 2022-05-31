@@ -39,6 +39,7 @@
     </n-form-item>
     <n-form-item class="submit-btn">
       <n-button
+        :disabled="disabled"
         round
         @click="submit"
       >
@@ -61,6 +62,7 @@ const form = ref({
   comment: '',
 });
 
+const disabled = ref(false);
 const rules = {
   name: [
     { required: true, message: '请输入公司名' },
@@ -75,6 +77,7 @@ const rules = {
 
 function submit() {
   formRef.value?.validate(async (valid) => {
+    disabled.value = true;
     if (!valid) {
       const res = await api.addCompany(form.value);
       if (res.code === 200) {
@@ -84,6 +87,7 @@ function submit() {
         message.error(res.message);
         emit('complete', 0);
       }
+      disabled.value = false;
     }
   });
 }
@@ -91,7 +95,6 @@ function submit() {
 <style lang="less" scoped>
 .form-wrapper{
   padding: 20px 40px 20px 20px;
-  background: #fff;
   .submit-btn {
     display: flex;
     justify-content: center;
