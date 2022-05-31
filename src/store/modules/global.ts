@@ -29,7 +29,7 @@ export const GlobalStore = defineStore<string, State, Getters, Actions>({
     token: '',
     userEmail: '',
     userId: '',
-    intro: localStorage.getItem('intro') || '',
+    intro: '',
   }),
 
   actions: {
@@ -43,7 +43,6 @@ export const GlobalStore = defineStore<string, State, Getters, Actions>({
     },
     saveIntro(intro: string) {
       this.intro = intro;
-      localStorage.setItem('intro', intro);
     },
   },
 });
