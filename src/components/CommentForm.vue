@@ -48,6 +48,7 @@
     </n-form-item>
     <n-form-item class="submit-btn">
       <n-button
+        :disabled="disabled"
         round
         @click="submit"
       >
@@ -71,8 +72,11 @@ const props = defineProps({
     default: '',
   },
 });
+
 const emit = defineEmits(['complete']);
 const message = useMessage();
+
+const disabled = ref(false);
 const formRef = ref<FormInst>();
 const form = ref({
   companyId: props.companyId,
@@ -100,6 +104,7 @@ const rules = {
 function submit() {
   formRef.value?.validate(async (valid) => {
     if (!valid) {
+      disabled.value = true;
       const res = await api.addComment(form.value);
       if (res.code === 200) {
         message.success('提交成功');
@@ -108,6 +113,7 @@ function submit() {
         message.error(res.message);
         emit('complete', 0);
       }
+      disabled.value = false;
     }
   });
 }
@@ -115,7 +121,6 @@ function submit() {
 <style lang="less" scoped>
 .form-wrapper{
   padding: 20px 40px 20px 20px;
-  background: #fff;
   .submit-btn {
     display: flex;
     justify-content: center;
