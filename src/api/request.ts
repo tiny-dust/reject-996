@@ -40,7 +40,15 @@ request.interceptors.request.use((res) => {
   }
   return res;
 }, (err) => err);
-request.interceptors.response.use((res) => res.data, (err) => err);
+
+request.interceptors.response.use((res) => {
+  const { data } = res;
+  if (data.code === 401) {
+    window.location.href = '/login';
+    return data;
+  }
+  return data;
+}, (err) => err);
 
 const api = {
   getCompanies(params: { search: string}):Promise<CommonResult<Company[]> & {total: number}> {
