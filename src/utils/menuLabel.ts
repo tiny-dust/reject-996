@@ -1,6 +1,7 @@
 import { h } from 'vue';
 import { RouterLink } from 'vue-router';
 
+
 export const label = (path: string, text: string) => (h(
   RouterLink,
   {
