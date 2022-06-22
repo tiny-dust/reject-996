@@ -42,7 +42,7 @@
     "vite": "^2.9.9",
     "vue-tsc": "^0.34.7"
   },
-   "changelog": {
+  "changelog": {
     "emojis": true,
     "authorName": true
   },
@@ -51,7 +51,7 @@
       "path": "@commitlint/cz-commitlint"
     }
   },
-   "release-it": {
+  "release-it": {
     "hooks": {
       "after:bump": "npm run changelog",
       "before:release": "echo 🚨 提醒：现在将 Github 中的默认分支更新为这个发布分支！",
