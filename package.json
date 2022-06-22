@@ -6,6 +6,8 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
+    "changelog": "conventional-changelog -p custom-config -i CHANGELOG.md -s -r 0",
+    "release": "release-it",
     "lint": "eslint --ext .ts,.tsx,.vue,.js ./src",
     "lint-fix": "eslint --ext .ts,.tsx,.vue,.js ./src  --fix"
   },
@@ -18,10 +20,17 @@
     "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@commitlint/config-angular": "^17.0.0",
+    "@commitlint/cz-commitlint": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
     "@vicons/ionicons5": "^0.12.0",
     "@vitejs/plugin-vue": "^2.3.3",
+    "commitizen": "^4.2.4",
+    "commitlint": "^17.0.2",
+    "conventional-changelog-cli": "^2.2.2",
+    "conventional-changelog-custom-config": "^0.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.32.0 || ^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.2",
@@ -32,5 +41,36 @@
     "unplugin-vue-components": "^0.19.5",
     "vite": "^2.9.9",
     "vue-tsc": "^0.34.7"
+  },
+  "changelog": {
+    "emojis": true,
+    "authorName": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/cz-commitlint"
+    }
+  },
+  "release-it": {
+    "hooks": {
+      "after:bump": "npm run changelog",
+      "before:release": "echo 🚨 提醒：现在将 Github 中的默认分支更新为这个发布分支！",
+      "after:release": "echo 🎊 成功发布 ${name} v${version} 到 ${ repo.repository}。"
+    },
+    "git": {
+      "requireCleanWorkingDir": false,
+      "requireBranch": "main",
+      "tagName": "v${version}",
+      "commitMessage": "chore(release): 🐳 v${version}",
+      "tagAnnotation": "v${version}",
+      "changelog": "npm run changelog"
+    },
+    "npm": {
+      "publish": false
+    },
+    "github": {
+      "release": true,
+      "tokenRef": "${GITHUB_TOKEN}"
+    }
   }
 }
